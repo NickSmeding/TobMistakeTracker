@@ -8,14 +8,14 @@ import net.runelite.api.Player;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.gameval.AnimationID;
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.HashSet;
 import java.util.Set;
 
 @Slf4j
 public class VerzikMeleeChancedTracker {
     @Getter
-    private final List<Player> playersThatChancedMelee = new ArrayList<>();
+    private final HashSet<Player> playersThatChancedMelee = new HashSet<>();
 
     private Player lastTickTarget;
     private WorldArea lastTickTargetArea;

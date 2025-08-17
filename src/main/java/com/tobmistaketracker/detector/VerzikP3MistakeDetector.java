@@ -92,7 +92,7 @@ public class VerzikP3MistakeDetector extends BaseTobMistakeDetector {
             mistakes.add(TobMistake.VERZIK_P3_PURPLE);
         }
 
-        List<Player> chancedMeleePlayers = verzikMeleeChancedTracker.getPlayersThatChancedMelee();
+        HashSet<Player> chancedMeleePlayers = verzikMeleeChancedTracker.getPlayersThatChancedMelee();
         if (chancedMeleePlayers.contains(raider.getPlayer())){
             chancedMeleePlayers.remove(raider.getPlayer());
             mistakes.add(TobMistake.VERZIK_P3_MELEE_CHANCED);
@@ -129,7 +129,7 @@ public class VerzikP3MistakeDetector extends BaseTobMistakeDetector {
     @Subscribe
     public void onAnimationChanged(AnimationChanged event)
     {
-        if (!(event.getActor() instanceof NPC))
+        if (event.getActor() instanceof NPC)
         {
             verzikMeleeChancedTracker.checkPlayerWronglyTanked(event);
         }
