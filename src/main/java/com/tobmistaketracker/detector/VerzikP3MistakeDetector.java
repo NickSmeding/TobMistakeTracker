@@ -4,13 +4,17 @@ import com.google.common.annotations.VisibleForTesting;
 import com.tobmistaketracker.TobBossNames;
 import com.tobmistaketracker.TobMistake;
 import com.tobmistaketracker.TobRaider;
-import com.tobmistaketracker.detector.MistakeDetectors.VerzikMeleeChancedTracker;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.*;
+import net.runelite.api.events.ActorDeath;
+import net.runelite.api.events.GameObjectDespawned;
+import net.runelite.api.events.GameObjectSpawned;
+import net.runelite.api.events.GraphicChanged;
+import net.runelite.api.events.NpcChanged;
+import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.eventbus.Subscribe;
 
 import javax.inject.Inject;
@@ -33,7 +37,6 @@ import java.util.Set;
 @Slf4j
 @Singleton
 public class VerzikP3MistakeDetector extends BaseTobMistakeDetector {
-    private VerzikMeleeChancedTracker verzikMeleeChancedTracker = new VerzikMeleeChancedTracker();
 
     private static final Set<Integer> VERZIK_P3_IDS = Set.of(
             10835, // Entry
@@ -89,11 +92,7 @@ public class VerzikP3MistakeDetector extends BaseTobMistakeDetector {
             mistakes.add(TobMistake.VERZIK_P3_PURPLE);
         }
 
-        HashSet<Player> chancedMeleePlayers = verzikMeleeChancedTracker.getPlayersThatChancedMelee();
-        if (chancedMeleePlayers.contains(raider.getPlayer())){
-            chancedMeleePlayers.remove(raider.getPlayer());
-            mistakes.add(TobMistake.VERZIK_P3_MELEE_CHANCED);
-        }
+        // TODO: Verzik melee if the animations become unmasked
 
         return mistakes;
     }
@@ -109,26 +108,6 @@ public class VerzikP3MistakeDetector extends BaseTobMistakeDetector {
     public void onGraphicChanged(GraphicChanged event) {
         if (event.getActor() instanceof Player && event.getActor().getGraphic() == PLAYER_PURPLE_GRAPHIC_ID) {
             playerNamesPurpled.add(event.getActor().getName());
-        }
-    }
-
-    @Subscribe
-    public void onGameTick(GameTick tick)
-    {
-        NPC verzik = client.getNpcs().stream()
-                .filter(VerzikP3MistakeDetector::isVerzikP3)
-                .findFirst()
-                .orElse(null);
-
-        verzikMeleeChancedTracker.setVerzikAttackInfo(verzik);
-    }
-
-    @Subscribe
-    public void onAnimationChanged(AnimationChanged event)
-    {
-        if (event.getActor() instanceof NPC)
-        {
-            verzikMeleeChancedTracker.checkPlayerWronglyTanked(event);
         }
     }
 
