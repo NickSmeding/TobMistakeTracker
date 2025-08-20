@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.ScriptPostFired;
@@ -17,10 +18,8 @@ import net.runelite.client.eventbus.Subscribe;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.tobmistaketracker.TobMistakeTrackerPlugin.TOB_ROOM_TRANSITION_SCRIPT_ID;
 import static com.tobmistaketracker.TobMistakeTrackerPlugin.getTobRoomEnterText;
@@ -68,6 +67,11 @@ public class DeathMistakeDetector extends BaseTobMistakeDetector {
         List<TobMistake> mistakes = new ArrayList<>();
         if (playerDeaths.contains(raider.getName())) {
             mistakes.add(TobMistake.DEATH);
+
+            // Overwrite currentRoom if we for sure know that we are in a room because of region
+            if (getCurrentRoom().roomName != null && currentRoom != getCurrentRoom()) {
+                currentRoom = getCurrentRoom();
+            }
 
             if (currentRoom == null) {
                 // Try one more time to compute currentRoom
@@ -171,14 +175,20 @@ public class DeathMistakeDetector extends BaseTobMistakeDetector {
         }
     }
 
+    private TobRoom getCurrentRoom(){
+        Player player = client.getLocalPlayer();
+        return TobRoom.tryGet((WorldPoint.fromLocalInstance(client, player.getLocalLocation()).getRegionID())).orElse(null);
+    }
+
     @AllArgsConstructor
     private enum TobRoom {
-        MAIDEN("The Maiden of Sugadinti", TobMistake.DEATH_MAIDEN, TobBossNames.MAIDEN),
-        BLOAT("The Pestilent Bloat", TobMistake.DEATH_BLOAT, TobBossNames.BLOAT),
-        NYLOCAS("The Nylocas", TobMistake.DEATH_NYLOCAS, TobBossNames.NYLO_BOSS),
-        SOTETSEG("Sotetseg", TobMistake.DEATH_SOTETSEG, TobBossNames.SOTETSEG),
-        XARPUS("Xarpus", TobMistake.DEATH_XARPUS, TobBossNames.XARPUS),
-        VERZIK("The Final Challenge", TobMistake.DEATH_VERZIK, TobBossNames.VERZIK);
+        MAIDEN("The Maiden of Sugadinti", TobMistake.DEATH_MAIDEN, TobBossNames.MAIDEN, 12613),
+        BLOAT("The Pestilent Bloat", TobMistake.DEATH_BLOAT, TobBossNames.BLOAT, 13125),
+        NYLOCAS("The Nylocas", TobMistake.DEATH_NYLOCAS, TobBossNames.NYLO_BOSS, 13122),
+        SOTETSEG("Sotetseg", TobMistake.DEATH_SOTETSEG, TobBossNames.SOTETSEG, 13123),
+        SOTETSEG_MAZE("Sotetseg Maze", TobMistake.DEATH_SOTETSEG, TobBossNames.SOTETSEG, 13379),
+        XARPUS("Xarpus", TobMistake.DEATH_XARPUS, TobBossNames.XARPUS, 12612),
+        VERZIK("The Final Challenge", TobMistake.DEATH_VERZIK, TobBossNames.VERZIK, 12611);
 
         @Getter
         private final String roomName;
@@ -188,6 +198,17 @@ public class DeathMistakeDetector extends BaseTobMistakeDetector {
 
         @Getter
         private final String roomBossName;
+
+        @Getter
+        private final int regionID;
+
+        private static final Map<Integer, TobRoom> LOOKUP =
+                Arrays.stream(values()).collect(Collectors.toMap(TobRoom::getRegionID, r -> r));
+
+        public static Optional<TobRoom> tryGet(int regionId)
+        {
+            return Optional.ofNullable(LOOKUP.get(regionId));
+        }
 
         /**
          * Retrieves the corresponding TobRoom for the specified roomName
