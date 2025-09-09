@@ -28,7 +28,7 @@ public class VerzikP1MistakeDetector extends BaseTobMistakeDetector {
     // Common spec animation IDs for other weapons (examples)
     private static final HashMap<Integer, String> NON_DAWNBRINGER_SPEC_MESSAGES = new HashMap<Integer, String>() {
         {
-            put(AnimationID.PUNCTURE, "Dragon dagger"); // Dragon dagger spec
+            put(AnimationID.PUNCTURE, "swee swee"); // Dragon dagger
             put(AnimationID.SLAYER_GRANITE_MAUL_SPECIAL_ATTACK, "Granite maul"); // Granite maul
             put(AnimationID.HUMAN_DRAGON_CLAWS_SPEC, "Dragon claws"); // Dragon claws
             put(AnimationID.HUMAN_WEAPON_BURNING_CLAWS_02_SPEC, "Burning claws"); // Burning claws
@@ -42,12 +42,14 @@ public class VerzikP1MistakeDetector extends BaseTobMistakeDetector {
             put(AnimationID.ABYSSAL_BLUDGEON_SPECIAL_ATTACK, "Bludgeon"); // Bludgeon
             put(AnimationID.ABYSSAL_DAGGER_SPECIAL, "Abby dagger"); // Abby dagger
             put(AnimationID.BGS_SPECIAL_PLAYER, "Bandos godsword"); // Bandos godsword
-            put(AnimationID.NIGHTMARE_STAFF_SPECIAL, "Nightmare staff"); // Nightmare staff
+            put(AnimationID.NIGHTMARE_STAFF_SPECIAL, "I'm A Magician"); // Nightmare staff
             put(AnimationID.WEAPON_SWORD_OSMUMTEN03_SPECIAL, "Osmunten Fang"); // Osmunten Fang
-            put(AnimationID.HUMAN_SPECIAL02_VOIDWAKER, "VoidWaker"); // VoidWaker
+            put(AnimationID.HUMAN_SPECIAL02_VOIDWAKER, "Feel my thunder"); // VoidWaker
             put(AnimationID.DARK_SPEC_PLAYER, "Dark bow"); // Dark bow
-            put(AnimationID.HUMAN_HALBERD_VIRULENCE_01, "Noxious halberd"); // Noxious halberd?
-            // TODO: support for ZCB and ACB its harder to add because the projectile has a animation not the player
+            put(AnimationID.HUMAN_HALBERD_VIRULENCE_01, "How was I even posioned?"); // Noxious halberd?
+            put(AnimationID.VMQ4_ARKAN_BLADE_SPECIAL, "Oui Oui, minen baguette"); // ARKAN BLADE
+            put(AnimationID.SHOVE, "BLUB"); // Dragon spear, Zamorakian spear and hasta
+            // TODO: support for ZCB and ACB, its harder to add because the projectile has an animation not the player
         }};
 
     private final HashMap<String, Integer> playersWhoSpeccedWrong = new HashMap<>();
@@ -95,6 +97,9 @@ public class VerzikP1MistakeDetector extends BaseTobMistakeDetector {
         Player player = (Player) event.getActor();
         int animationId = player.getAnimation();
 
+        //There is currently no way to detect spec without looking at animations
+        //This will not cover every spec weapon, but it will have a list with weapons that is used a lot at tob
+        //And ofc some Easter egg items
         if (NON_DAWNBRINGER_SPEC_MESSAGES.containsKey(animationId)) {
             playersWhoSpeccedWrong.put(player.getName(), animationId);
         }
