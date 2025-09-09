@@ -203,7 +203,10 @@ public class TobMistakeTrackerPlugin extends Plugin {
                     raider.setDead(true);
                 }
 
-                addMistakeForPlayer(raider.getName(), mistake);
+                TobMistake mistakeForTracking = TobMistake.getMistakeForTracking(mistake);
+                if (mistakeForTracking != null) {
+                    addMistakeForPlayer(raider.getName(), mistakeForTracking);
+                }
                 addChatMessageForPlayerMistake(raider.getPlayer(), mistake);
             }
         }
