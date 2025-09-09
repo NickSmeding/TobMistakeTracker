@@ -1,7 +1,8 @@
 package com.tobmistaketracker.detector;
 
 import com.tobmistaketracker.TobBossNames;
-import com.tobmistaketracker.TobMistake;
+import com.tobmistaketracker.TobMistakeEvent.MistakeEvent;
+import com.tobmistaketracker.TobMistakeEvent.TobMistake;
 import com.tobmistaketracker.TobRaider;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -64,10 +65,10 @@ public class DeathMistakeDetector extends BaseTobMistakeDetector {
     }
 
     @Override
-    public List<TobMistake> detectMistakes(@NonNull TobRaider raider) {
-        List<TobMistake> mistakes = new ArrayList<>();
+    public List<MistakeEvent> detectMistakes(@NonNull TobRaider raider) {
+        List<MistakeEvent> mistakes = new ArrayList<>();
         if (playerDeaths.contains(raider.getName())) {
-            mistakes.add(TobMistake.DEATH);
+            mistakes.add(new MistakeEvent(TobMistake.DEATH));
 
             if (currentRoom == null) {
                 // Try one more time to compute currentRoom
@@ -76,7 +77,7 @@ public class DeathMistakeDetector extends BaseTobMistakeDetector {
 
             // In the case that we still can't determine which room we're in, we just won't add the room death
             if (currentRoom != null) {
-                mistakes.add(currentRoom.getDeathMistake());
+                mistakes.add(new MistakeEvent(currentRoom.getDeathMistake()));
             }
         }
 

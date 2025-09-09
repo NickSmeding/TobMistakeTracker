@@ -1,6 +1,6 @@
 package com.tobmistaketracker.panel;
 
-import com.tobmistaketracker.TobMistake;
+import com.tobmistaketracker.TobMistakeEvent.TobMistake;
 import com.tobmistaketracker.TobMistakeTrackerPlugin;
 import com.tobmistaketracker.state.MistakeStateManager;
 import com.tobmistaketracker.state.MistakeStateReader;

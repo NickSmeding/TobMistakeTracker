@@ -2,6 +2,8 @@ package com.tobmistaketracker;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Provides;
+import com.tobmistaketracker.TobMistakeEvent.MistakeEvent;
+import com.tobmistaketracker.TobMistakeEvent.TobMistake;
 import com.tobmistaketracker.detector.MistakeDetectorManager;
 import com.tobmistaketracker.panel.TobMistakeTrackerPanel;
 import lombok.Getter;
@@ -193,17 +195,17 @@ public class TobMistakeTrackerPlugin extends Plugin {
     }
 
     private void detect(@NonNull TobRaider raider) {
-        List<TobMistake> mistakes = mistakeDetectorManager.detectMistakes(raider);
+        List<MistakeEvent> mistakes = mistakeDetectorManager.detectMistakes(raider);
         if (!mistakes.isEmpty()) {
             log.debug("" + client.getTickCount() + " Found mistakes for " + raider.getName() + " - " + mistakes);
 
-            for (TobMistake mistake : mistakes) {
+            for (MistakeEvent mistake : mistakes) {
                 // Handle special logic for deaths
-                if (mistake == TobMistake.DEATH) {
+                if (mistake.getMistake() == TobMistake.DEATH) {
                     raider.setDead(true);
                 }
 
-                TobMistake mistakeForTracking = TobMistake.getMistakeForTracking(mistake);
+                TobMistake mistakeForTracking = TobMistake.getMistakeForTracking(mistake.getMistake());
                 if (mistakeForTracking != null) {
                     addMistakeForPlayer(raider.getName(), mistakeForTracking);
                 }
@@ -214,8 +216,8 @@ public class TobMistakeTrackerPlugin extends Plugin {
         afterDetect(raider);
     }
 
-    private void addChatMessageForPlayerMistake(Player player, TobMistake mistake) {
-        final String overheadText = mistake.getChatMessage();
+    private void addChatMessageForPlayerMistake(Player player, MistakeEvent mistake) {
+        final String overheadText = mistake.getMessage();
         if (overheadText.isEmpty()) {
             // This is the case for the universal DEATH mistake, for example.
             return;
@@ -229,7 +231,7 @@ public class TobMistakeTrackerPlugin extends Plugin {
 
         // Add to chat box if config is enabled
         if (config.showMistakesInChat()) {
-            client.addChatMessage(ChatMessageType.PUBLICCHAT, player.getName(), mistake.getChatMessage(), null);
+            client.addChatMessage(ChatMessageType.PUBLICCHAT, player.getName(), mistake.getMessage(), null);
         }
     }
 

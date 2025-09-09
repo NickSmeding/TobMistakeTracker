@@ -2,7 +2,8 @@ package com.tobmistaketracker.detector;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.tobmistaketracker.TobBossNames;
-import com.tobmistaketracker.TobMistake;
+import com.tobmistaketracker.TobMistakeEvent.MistakeEvent;
+import com.tobmistaketracker.TobMistakeEvent.TobMistake;
 import com.tobmistaketracker.TobRaider;
 import com.tobmistaketracker.detector.MistakeDetectors.VerzikMeleeChancedTracker;
 import com.tobmistaketracker.detector.MistakeDetectors.VerzikMeleeChancedTracker.MeleeChanceData;
@@ -19,6 +20,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.gameval.NpcID;
 import net.runelite.client.eventbus.Subscribe;
 
 import javax.inject.Inject;
@@ -44,9 +46,9 @@ public class VerzikP3MistakeDetector extends BaseTobMistakeDetector {
     private VerzikMeleeChancedTracker verzikMeleeChancedTracker = new VerzikMeleeChancedTracker();
 
     private static final Set<Integer> VERZIK_P3_IDS = Set.of(
-            10835, // Entry
-            8374, // Normal
-            10852 // Hard
+            NpcID.VERZIK_PHASE3,
+            NpcID.VERZIK_PHASE3_HARD,
+            NpcID.VERZIK_PHASE3_STORY
     );
 
     private static final int VERZIK_WEB_GAME_OBJECT_ID = 32734;
@@ -84,8 +86,8 @@ public class VerzikP3MistakeDetector extends BaseTobMistakeDetector {
     }
 
     @Override
-    public List<TobMistake> detectMistakes(@NonNull TobRaider raider) {
-        List<TobMistake> mistakes = new ArrayList<>();
+    public List<MistakeEvent> detectMistakes(@NonNull TobRaider raider) {
+        List<MistakeEvent> mistakes = new ArrayList<>();
 
         if (raider.isDead()) {
             return mistakes;
@@ -94,11 +96,11 @@ public class VerzikP3MistakeDetector extends BaseTobMistakeDetector {
         // If this web just despawned, we can track this mistake
         // Note: We are intentionally delaying detecting this, so as to avoid cheating
         if (webTilesToRemove.contains(raider.getPreviousWorldLocation())) {
-            mistakes.add(TobMistake.VERZIK_P3_WEB);
+            mistakes.add(new MistakeEvent(TobMistake.VERZIK_P3_WEB));
         }
 
         if (playerNamesPurpled.contains(raider.getName())) {
-            mistakes.add(TobMistake.VERZIK_P3_PURPLE);
+            mistakes.add(new MistakeEvent(TobMistake.VERZIK_P3_PURPLE));
         }
 
         MeleeChanceData chancedMeleePlayer = verzikMeleeChancedTracker.getMeleeChanceData();
@@ -106,7 +108,7 @@ public class VerzikP3MistakeDetector extends BaseTobMistakeDetector {
             TobMistake mistake = chancedMeleePlayer.isWasMelee() ?
                     TobMistake.VERZIK_P3_MELEE_TANKED :
                     TobMistake.VERZIK_P3_MELEE_CHANCED;
-            mistakes.add(mistake);
+            mistakes.add(new MistakeEvent(mistake));
         }
 
         return mistakes;

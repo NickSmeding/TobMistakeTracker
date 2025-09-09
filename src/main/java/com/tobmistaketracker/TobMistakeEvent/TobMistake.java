@@ -1,5 +1,6 @@
-package com.tobmistaketracker;
+package com.tobmistaketracker.TobMistakeEvent;
 
+import com.tobmistaketracker.TobMistakeTrackerPlugin;
 import lombok.Getter;
 import lombok.NonNull;
 import net.runelite.client.util.ImageUtil;
@@ -12,7 +13,7 @@ import java.util.Set;
 
 public enum TobMistake {
     // All death chat messages will be handled by the corresponding specific DEATH enum
-    DEATH("Death", "death.png", ""),
+    DEATH("Death", "death_maiden.png", ""),
     DEATH_MAIDEN("Maiden Death", "death_maiden.png", "I'm planking!"),
     DEATH_BLOAT("Bloat Death", "death_bloat.png", "I'm planking!"),
     DEATH_NYLOCAS("Nylocas Death", "death_nylo.png", "I'm planking!"),
@@ -29,8 +30,8 @@ public enum TobMistake {
     VERZIK_P3_MELEE_CHANCED("Verzik P3 Melee", "verzik_p3_melee.png", "Was I lucky?"),
     VERZIK_P3_MELEE_TEAMMATE("Verzik P3 Melee", "verzik_p3_melee.png", "I'm being PK'd!"),
     VERZIK_P3_WEB("Verzik P3 Web", "verzik_p3_web.png", "I was stuck in a web!"),
-    VERZIK_P3_PURPLE("Verzik P3 Purple Tornado", "verzik_p3_purple.png", "I'm healing Verzik!");
-
+    VERZIK_P3_PURPLE("Verzik P3 Purple Tornado", "verzik_p3_purple.png", "I'm healing Verzik!"),
+    VERZIK_P1_NON_DAWNBRINGER_SPEC("Verzik P1 Wrong Spec", "verzik_p3_purple.png", "I'm healing Verzik!");
 
 
     private static final Set<TobMistake> ROOM_DEATH_ENUMS = EnumSet.of(
@@ -70,7 +71,7 @@ public enum TobMistake {
         this.mistakeName = mistakeName;
         this.chatMessage = chatMessage;
 
-        this.mistakeImage = ImageUtil.loadImageResource(getClass(), mistakeImagePath);
+        this.mistakeImage = ImageUtil.loadImageResource(TobMistakeTrackerPlugin.class, mistakeImagePath);
     }
 
     public static boolean isRoomDeath(TobMistake mistake) {

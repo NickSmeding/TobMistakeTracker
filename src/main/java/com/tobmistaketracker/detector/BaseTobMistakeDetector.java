@@ -1,6 +1,7 @@
 package com.tobmistaketracker.detector;
 
-import com.tobmistaketracker.TobMistake;
+import com.tobmistaketracker.TobMistakeEvent.MistakeEvent;
+import com.tobmistaketracker.TobMistakeEvent.TobMistake;
 import com.tobmistaketracker.TobMistakeTrackerPlugin;
 import com.tobmistaketracker.TobRaider;
 import lombok.Getter;
@@ -66,7 +67,7 @@ public abstract class BaseTobMistakeDetector {
      * @param raider - The raider to detect mistakes for
      * @return The list of {@link TobMistake} detected on this tick
      */
-    public abstract List<TobMistake> detectMistakes(@NonNull TobRaider raider);
+    public abstract List<MistakeEvent> detectMistakes(@NonNull TobRaider raider);
 
     /**
      * This optional method allows detectors to handle some logic after all detectMistakes methods have been invoked

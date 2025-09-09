@@ -2,7 +2,8 @@ package com.tobmistaketracker.detector;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.tobmistaketracker.TobBossNames;
-import com.tobmistaketracker.TobMistake;
+import com.tobmistaketracker.TobMistakeEvent.MistakeEvent;
+import com.tobmistaketracker.TobMistakeEvent.TobMistake;
 import com.tobmistaketracker.TobRaider;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -61,9 +62,9 @@ public class BloatMistakeDetector extends BaseTobMistakeDetector {
     }
 
     @Override
-    public List<TobMistake> detectMistakes(@NonNull TobRaider raider) {
+    public List<MistakeEvent> detectMistakes(@NonNull TobRaider raider) {
         if (!raider.isDead() && activeHandTiles.contains(raider.getPreviousWorldLocation())) {
-            return Collections.singletonList(TobMistake.BLOAT_HAND);
+            return Collections.singletonList(new MistakeEvent(TobMistake.BLOAT_HAND));
         }
 
         return Collections.emptyList();

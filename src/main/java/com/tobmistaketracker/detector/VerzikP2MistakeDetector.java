@@ -2,7 +2,8 @@ package com.tobmistaketracker.detector;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.tobmistaketracker.TobBossNames;
-import com.tobmistaketracker.TobMistake;
+import com.tobmistaketracker.TobMistakeEvent.MistakeEvent;
+import com.tobmistaketracker.TobMistakeEvent.TobMistake;
 import com.tobmistaketracker.TobRaider;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,7 @@ import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GraphicsObjectCreated;
 import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.gameval.NpcID;
 import net.runelite.client.eventbus.Subscribe;
 
 import javax.inject.Inject;
@@ -37,10 +39,11 @@ public class VerzikP2MistakeDetector extends BaseTobMistakeDetector {
     private static final int VERZIK_BOMB_GRAPHICS_OBJECT_ID = 1584;
     private static final int PLAYER_BOUNCE_ANIMATION_ID = 1157;
     private static final int VERZIK_ACID_GAME_OBJECT_ID = 41747;
+
     private static final Set<Integer> VERZIK_P2_IDS = Set.of(
-            10833, // Entry
-            8372, // Normal
-            10850 // Hard
+            NpcID.VERZIK_PHASE2,
+            NpcID.VERZIK_PHASE2_HARD,
+            NpcID.VERZIK_PHASE2_STORY
     );
 
     private final Set<WorldPoint> activeBombTiles;
@@ -76,8 +79,8 @@ public class VerzikP2MistakeDetector extends BaseTobMistakeDetector {
     }
 
     @Override
-    public List<TobMistake> detectMistakes(@NonNull TobRaider raider) {
-        List<TobMistake> mistakes = new ArrayList<>();
+    public List<MistakeEvent> detectMistakes(@NonNull TobRaider raider) {
+        List<MistakeEvent> mistakes = new ArrayList<>();
 
         if (raider.isDead()) {
             return mistakes;
@@ -85,17 +88,17 @@ public class VerzikP2MistakeDetector extends BaseTobMistakeDetector {
 
         // Put acid mistake first, so if acid and bomb happen on the same tick, the chat overhead is for the latter.
         if (activeAcidTiles.contains(raider.getPreviousWorldLocation())) {
-            mistakes.add(TobMistake.VERZIK_P2_ACID);
+            mistakes.add(new MistakeEvent(TobMistake.VERZIK_P2_ACID));
         }
 
         if (activeBombTiles.contains(raider.getPreviousWorldLocation())) {
-            mistakes.add(TobMistake.VERZIK_P2_BOMB);
+            mistakes.add(new MistakeEvent(TobMistake.VERZIK_P2_BOMB));
         }
 
         // Currently, there doesn't seem to be a way to be both bombed *and* bounced on the same tick, but let's
         // write it up this way anyway in case that ever changes, since it's not a problem to do so.
         if (playerNamesBounced.contains(raider.getName())) {
-            mistakes.add(TobMistake.VERZIK_P2_BOUNCE);
+            mistakes.add(new MistakeEvent(TobMistake.VERZIK_P2_BOUNCE));
         }
 
         return mistakes;

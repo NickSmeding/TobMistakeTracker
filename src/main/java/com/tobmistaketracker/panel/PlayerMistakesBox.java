@@ -1,6 +1,6 @@
 package com.tobmistaketracker.panel;
 
-import com.tobmistaketracker.TobMistake;
+import com.tobmistaketracker.TobMistakeEvent.TobMistake;
 import com.tobmistaketracker.state.MistakeStateManager;
 import lombok.Getter;
 import lombok.NonNull;

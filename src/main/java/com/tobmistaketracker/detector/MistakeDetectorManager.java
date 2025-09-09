@@ -1,7 +1,8 @@
 package com.tobmistaketracker.detector;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.tobmistaketracker.TobMistake;
+import com.tobmistaketracker.TobMistakeEvent.MistakeEvent;
+import com.tobmistaketracker.TobMistakeEvent.TobMistake;
 import com.tobmistaketracker.TobRaider;
 import lombok.Getter;
 import lombok.NonNull;
@@ -37,12 +38,14 @@ public class MistakeDetectorManager {
     public MistakeDetectorManager(DeathMistakeDetector deathMistakeDetector,
                                   MaidenMistakeDetector maidenMistakeDetector,
                                   BloatMistakeDetector bloatMistakeDetector,
+                                  VerzikP1MistakeDetector verzikP1MistakeDetector,
                                   VerzikP2MistakeDetector verzikP2MistakeDetector,
                                   VerzikP3MistakeDetector verzikP3MistakeDetector) {
         // Order matters -- death should be last
         this.mistakeDetectors = new ArrayList<>(Arrays.asList(
                 maidenMistakeDetector,
                 bloatMistakeDetector,
+                verzikP1MistakeDetector,
                 verzikP2MistakeDetector,
                 verzikP3MistakeDetector,
                 deathMistakeDetector));
@@ -64,8 +67,8 @@ public class MistakeDetectorManager {
         // Don't clear mistakeDetectors or else we can't get them back.
     }
 
-    public List<TobMistake> detectMistakes(@NonNull TobRaider raider) {
-        List<TobMistake> mistakes = new ArrayList<>();
+    public List<MistakeEvent> detectMistakes(@NonNull TobRaider raider) {
+        List<MistakeEvent> mistakes = new ArrayList<>();
 
         if (!started) {
             return mistakes;

@@ -1,6 +1,6 @@
 package com.tobmistaketracker.state;
 
-import com.tobmistaketracker.TobMistake;
+import com.tobmistaketracker.TobMistakeEvent.TobMistake;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 

@@ -1,6 +1,6 @@
 package com.tobmistaketracker.state;
 
-import com.tobmistaketracker.TobMistake;
+import com.tobmistaketracker.TobMistakeEvent.TobMistake;
 
 import java.util.HashMap;
 import java.util.Map;

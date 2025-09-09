@@ -2,7 +2,8 @@ package com.tobmistaketracker.detector;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.tobmistaketracker.TobBossNames;
-import com.tobmistaketracker.TobMistake;
+import com.tobmistaketracker.TobMistakeEvent.MistakeEvent;
+import com.tobmistaketracker.TobMistakeEvent.TobMistake;
 import com.tobmistaketracker.TobRaider;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -102,10 +103,10 @@ public class MaidenMistakeDetector extends BaseTobMistakeDetector {
     }
 
     @Override
-    public List<TobMistake> detectMistakes(@NonNull TobRaider raider) {
+    public List<MistakeEvent> detectMistakes(@NonNull TobRaider raider) {
         WorldPoint previousLocation = raider.getPreviousWorldLocation();
         if (!raider.isDead() && isOnBloodTile(previousLocation)) {
-            return isSpawnedBlood(previousLocation) ? Collections.singletonList(TobMistake.MAIDEN_BLOOD) : Collections.singletonList(TobMistake.MAIDEN_BLOOD_SPAWN);
+            return isSpawnedBlood(previousLocation) ? Collections.singletonList(new MistakeEvent(TobMistake.MAIDEN_BLOOD)) : Collections.singletonList(new MistakeEvent(TobMistake.MAIDEN_BLOOD_SPAWN));
         }
 
         return Collections.emptyList();
