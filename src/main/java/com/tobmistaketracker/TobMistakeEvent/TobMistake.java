@@ -13,7 +13,7 @@ import java.util.Set;
 
 public enum TobMistake {
     // All death chat messages will be handled by the corresponding specific DEATH enum
-    DEATH("Death", "death_maiden.png", ""),
+    DEATH("Death", "death.png", ""),
     DEATH_MAIDEN("Maiden Death", "death_maiden.png", "I'm planking!"),
     DEATH_BLOAT("Bloat Death", "death_bloat.png", "I'm planking!"),
     DEATH_NYLOCAS("Nylocas Death", "death_nylo.png", "I'm planking!"),
