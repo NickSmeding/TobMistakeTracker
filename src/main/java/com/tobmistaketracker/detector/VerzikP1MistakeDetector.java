@@ -35,7 +35,7 @@ public class VerzikP1MistakeDetector extends BaseTobMistakeDetector {
             put(AnimationID.SARADOMIN_SWORD_SPECIAL_PLAYER, "Saradomin godsword"); // Saradomin godsword
             put(AnimationID.DRAGON_WARHAMMER_SA_PLAYER, "Dragon Warhammer"); // Dragon Warhammer
             put(AnimationID.HUMAN_ELDER_MAUL_SPEC, "Elder maul"); // Elder maul
-            put(AnimationID.HUMAN_EYE_OF_AYAK_SPECIAL, "Eye of Ayak"); // Eye of Ayak
+            put(AnimationID.HUMAN_EYE_OF_AYAK_SPECIAL, "3t world record incoming"); // Eye of Ayak
             put(AnimationID.DTTD_DAGGER_SP_ATTACK, "Bone dagger"); // Bone dagger?
             put(AnimationID.DRAGON_HALBERD_SPECIAL_ATTACK, "Dragon halberd or crystal halber"); // Dragon halberd and crystal halberd
             put(AnimationID.TOXIC_BLOWPIPE_SPECIAL_UPDATED, "Blowpipe"); // Blowpipe
