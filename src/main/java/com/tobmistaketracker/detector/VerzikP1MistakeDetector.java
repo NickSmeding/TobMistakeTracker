@@ -30,12 +30,12 @@ public class VerzikP1MistakeDetector extends BaseTobMistakeDetector {
         {
             put(AnimationID.PUNCTURE, "swee swee"); // Dragon dagger
             put(AnimationID.SLAYER_GRANITE_MAUL_SPECIAL_ATTACK, "Granite maul"); // Granite maul
-            put(AnimationID.HUMAN_DRAGON_CLAWS_SPEC, "Dragon claws"); // Dragon claws
+            put(AnimationID.HUMAN_DRAGON_CLAWS_SPEC, "3t world record incoming"); // Dragon claws
             put(AnimationID.HUMAN_WEAPON_BURNING_CLAWS_02_SPEC, "Burning claws"); // Burning claws
             put(AnimationID.SARADOMIN_SWORD_SPECIAL_PLAYER, "Saradomin godsword"); // Saradomin godsword
-            put(AnimationID.DRAGON_WARHAMMER_SA_PLAYER, "Dragon Warhammer"); // Dragon Warhammer
+            put(AnimationID.DRAGON_WARHAMMER_SA_PLAYER, "Bonk!"); // Dragon Warhammer
             put(AnimationID.HUMAN_ELDER_MAUL_SPEC, "Elder maul"); // Elder maul
-            put(AnimationID.HUMAN_EYE_OF_AYAK_SPECIAL, "3t world record incoming"); // Eye of Ayak
+            put(AnimationID.HUMAN_EYE_OF_AYAK_SPECIAL, "I love rocks"); // Eye of Ayak
             put(AnimationID.DTTD_DAGGER_SP_ATTACK, "Bone dagger"); // Bone dagger?
             put(AnimationID.DRAGON_HALBERD_SPECIAL_ATTACK, "Dragon halberd or crystal halber"); // Dragon halberd and crystal halberd
             put(AnimationID.TOXIC_BLOWPIPE_SPECIAL_UPDATED, "Blowpipe"); // Blowpipe
@@ -49,6 +49,7 @@ public class VerzikP1MistakeDetector extends BaseTobMistakeDetector {
             put(AnimationID.HUMAN_HALBERD_VIRULENCE_01, "How was I even posioned?"); // Noxious halberd?
             put(AnimationID.VMQ4_ARKAN_BLADE_SPECIAL, "Oui Oui, minen baguette"); // ARKAN BLADE
             put(AnimationID.SHOVE, "BLUB"); // Dragon spear, Zamorakian spear and hasta
+            put(AnimationID.SLAYER_WHIP_SP_ATTACK, "BLUB"); // Whip and Tent whip
             // TODO: support for ZCB and ACB, its harder to add because the projectile has an animation not the player
         }};
 
